@@ -16,7 +16,7 @@ export const search = async (req, res) => {
         const scrapedResults = await Promise.all(
             searchResults.map(async (result) => ({
                 title: result.title,
-                link: result.link,
+                link: result.url,
                 snippet: result.snippet,
                 fullContent: await scrapeFullPage(result.link),
             }))
