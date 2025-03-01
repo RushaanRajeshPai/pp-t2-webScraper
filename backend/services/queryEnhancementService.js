@@ -42,18 +42,26 @@
 
 
 const axios = require('axios');
-const { PERPLEXITY_API_KEY } = require('../config/env');
+const { GEMINI_API_KEY } = require('../config/env');
 
 async function enhanceQuery(query) {
     try {
-        const response = await axios.post('https://api.perplexity.ai/v1/chat', {
-            query: query,
-        }, {
-            headers: { 'Authorization': `Bearer ${PERPLEXITY_API_KEY}` }
-        });
-        return response.data.enhanced_query;
+        const response = await axios.post(
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateText',
+            {
+                prompt: { text: `Enhance this search query: ${query}` },
+            },
+            {
+                headers: { 
+                    'Authorization': `Bearer ${GEMINI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        return response.data?.candidates?.[0]?.output || query;
     } catch (error) {
-        console.error('Error enhancing query:', error);
+        console.error('Error enhancing query using Gemini:', error);
         throw error;
     }
 }

@@ -66,19 +66,22 @@
 
 // Perplexity API
 const axios = require('axios');
-const { GEMINI_API_KEY } = require('../config/env');
+const { PERPLEXITY_API_KEY } = require('../config/env');
 
 async function fetchSearchResults(query) {
     try {
-        const response = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateText', {
-            prompt: { text: `Find relevant search sources for: ${query}` },
+        const response = await axios.post('https://api.perplexity.ai/v1/chat', {
+            query: query,
         }, {
-            headers: { 'Authorization': `Bearer ${GEMINI_API_KEY}`, 'Content-Type': 'application/json' }
+            headers: { 
+                'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
+                'Content-Type': 'application/json'
+            }
         });
-        
+
         return response.data?.sources || [];
     } catch (error) {
-        console.error('Error fetching search results from Gemini:', error);
+        console.error('Error fetching search results from Perplexity:', error);
         throw error;
     }
 }
