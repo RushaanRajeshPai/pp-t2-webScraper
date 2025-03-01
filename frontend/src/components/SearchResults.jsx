@@ -8,8 +8,14 @@ const SearchResults = ({ results }) => {
                     <h2>{result.title}</h2>
                     <p>{result.snippet}</p>
                     <a href={result.link} target="_blank" rel="noopener noreferrer">
-                        Read More
-                    </a>
+                        Read More</a>
+                    
+                    {result.fullContent && (
+                        <details>
+                            <summary>View Full Content</summary>
+                            <p>{result.fullContent}</p>
+                        </details>
+                    )}
                 </div>
             ))}
         </div>
