@@ -45,35 +45,56 @@
 //     }
 // };
 
-import axios from 'axios';
-import { CONFIG } from '../config/env.js';
 
-export const scrapeFullPage = async (url) => {
-    if (!CONFIG.SCRAPINGBEE_API_KEY) {
-        console.error("Error: SCRAPINGBEE_API_KEY is missing.");
-        return "Content not available.";
-    }
+//ScrapingBee
+// import axios from 'axios';
+// import { CONFIG } from '../config/env.js';
 
-    if (!url || typeof url !== 'string' || url.trim().length === 0) {
-        console.error("Error: URL parameter is missing or invalid.");
-        return "Content not available.";
-    }
+// export const scrapeFullPage = async (url) => {
+//     if (!CONFIG.SCRAPINGBEE_API_KEY) {
+//         console.error("Error: SCRAPINGBEE_API_KEY is missing.");
+//         return "Content not available.";
+//     }
 
+//     if (!url || typeof url !== 'string' || url.trim().length === 0) {
+//         console.error("Error: URL parameter is missing or invalid.");
+//         return "Content not available.";
+//     }
+
+//     try {
+//         const encodedUrl = encodeURIComponent(url.trim());
+
+//         const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
+//             params: {
+//                 api_key: CONFIG.SCRAPINGBEE_API_KEY,
+//                 url: encodedUrl,
+//                 render_js: false
+//             }
+//         });
+
+//         console.log("Scraped content received:", response.data);
+//         return response.data;
+//     } catch (error) {
+//         console.error(`Error scraping ${url}:`, error.response?.data || error.message);
+//         return "Content not available.";
+//     }
+// };
+
+
+//ScrapingBee alternative
+const axios = require('axios');
+const { SCRAPINGBEE_API_KEY } = require('../config/env');
+
+async function scrapePage(url) {
     try {
-        const encodedUrl = encodeURIComponent(url.trim());
-
-        const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-            params: {
-                api_key: CONFIG.SCRAPINGBEE_API_KEY,
-                url: encodedUrl,
-                render_js: false
-            }
+        const response = await axios.get(`https://app.scrapingbee.com/api/v1/`, {
+            params: { api_key: SCRAPINGBEE_API_KEY, url }
         });
-
-        console.log("Scraped content received:", response.data);
         return response.data;
     } catch (error) {
-        console.error(`Error scraping ${url}:`, error.response?.data || error.message);
-        return "Content not available.";
+        console.error('Error scraping:', error);
+        throw error;
     }
-};
+}
+
+module.exports = { scrapePage };

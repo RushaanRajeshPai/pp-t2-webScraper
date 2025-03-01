@@ -65,44 +65,22 @@
 
 
 // Perplexity API
-import axios from 'axios';
-import { CONFIG } from '../config/env.js';
+const axios = require('axios');
+const { GEMINI_API_KEY } = require('../config/env');
 
-export const fetchSearchResults = async (query) => {
-    if (!CONFIG.PERPLEXITY_API_KEY) {
-        console.error("Error: PERPLEXITY_API_KEY is missing.");
-        return [];
-    }
-
-    if (!query || typeof query !== 'string' || query.trim().length === 0) {
-        console.error("Error: Invalid search query.");
-        return [];
-    }
-
+async function fetchSearchResults(query) {
     try {
-        const requestPayload = {
-            model: "search",  // Specify search model
-            query: query.trim(), 
-            num_results: 10  // Fetch top 10 results
-        };
-
-        console.log("Sending API Request to Perplexity:", requestPayload);
-
-        const response = await axios.post(
-            'https://api.perplexity.ai/search',  // Correct API URL
-            requestPayload,
-            {
-                headers: {
-                    'Authorization': `Bearer ${CONFIG.PERPLEXITY_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        console.log("Search results received:", response.data);
-        return response.data.results || [];
+        const response = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateText', {
+            prompt: { text: `Find relevant search sources for: ${query}` },
+        }, {
+            headers: { 'Authorization': `Bearer ${GEMINI_API_KEY}`, 'Content-Type': 'application/json' }
+        });
+        
+        return response.data?.sources || [];
     } catch (error) {
-        console.error("Error fetching search results:", error.response?.data || error.message);
-        return [];
+        console.error('Error fetching search results from Gemini:', error);
+        throw error;
     }
-};
+}
+
+module.exports = { fetchSearchResults };
