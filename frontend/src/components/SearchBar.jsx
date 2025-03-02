@@ -3,7 +3,8 @@ import { useState } from "react";
 function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     if (query.trim()) {
       onSearch(query);
     }

@@ -11,7 +11,7 @@ function SearchResults({ results, isLinkup = false }) {
       {!isLinkup && results.content && <ReactMarkdown>{results.content}</ReactMarkdown>}
 
       <ul>
-        {results?.sources?.map((source, index) => (
+        {(results?.sources || []).map((source, index) => (
           <li key={index} className="border p-2 mt-2">
             <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
               {source.title}

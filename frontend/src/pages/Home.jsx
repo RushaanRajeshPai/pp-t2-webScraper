@@ -8,14 +8,32 @@ function Home() {
   const [perplexityResults, setPerplexityResults] = useState([]);
   const [linkupResults, setLinkupResults] = useState([]);
 
+  // const handleSearch = async (query) => {
+  //   try {
+  //     // Fetch results from Perplexity API
+  //     const perplexityData = await search(query);
+  //     setPerplexityResults(perplexityData.results);
+
+  //     // Fetch results from Linkup.so API
+  //     const linkupData = await fetchLinkupResults(query);
+  //     setLinkupResults(linkupData);
+  //   } catch (error) {
+  //     console.error("Error fetching search results:", error);
+  //   }
+  // };
+
   const handleSearch = async (query) => {
     try {
-      // Fetch results from Perplexity API
+      console.log("Searching for:", query);
+  
+      // Fetch Perplexity results
       const perplexityData = await search(query);
+      console.log("Perplexity Results:", perplexityData.results);
       setPerplexityResults(perplexityData.results);
-
-      // Fetch results from Linkup.so API
+  
+      // Fetch LinkUp results
       const linkupData = await fetchLinkupResults(query);
+      console.log("LinkUp Results:", linkupData);
       setLinkupResults(linkupData);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -30,13 +48,14 @@ function Home() {
         {/* Display Perplexity API results */}
         <div>
           <h2 className="text-xl font-semibold">Perplexity Results</h2>
-          <SearchResults results={perplexityResults} />
+          <SearchResults results={perplexityResults || { sources: [] }} />
         </div>
         
         {/* Display Linkup.so API results */}
         <div>
           <h2 className="text-xl font-semibold">Linkup.so Results</h2>
-          <SearchResults results={linkupResults} isLinkup={true} />
+          {/* <SearchResults results={linkupResults} isLinkup={true} /> */}
+          <SearchResults results={linkupResults || { sources: [] }} isLinkup={true} />
         </div>
       </div>
     </div>
