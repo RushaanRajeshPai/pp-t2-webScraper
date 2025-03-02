@@ -37,7 +37,10 @@ function Home() {
     <div className="p-4">
       <h1 className="text-2xl font-bold">Search Engine</h1>
       <SearchBar onSearch={handleSearch} />
-      <SearchResults results={results} />
+      <div style={{ display: "flex", gap: "20px" }}>
+        <SearchResults results={results} />
+        <SearchResults results={results} />
+      </div>
     </div>
   );
 }
