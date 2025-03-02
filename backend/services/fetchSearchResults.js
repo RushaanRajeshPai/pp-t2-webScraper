@@ -1,89 +1,50 @@
-// import axios from 'axios';
-// import { CONFIG } from '../config/env.js';
-
-// export const fetchSearchResults = async (query) => {
-//     try {
-//         const response = await axios.get(`https://serpapi.com/search`, {
-//             params: {
-//                 api_key: CONFIG.SERP_API_KEY,
-//                 q: query
-//             }
-//         });
-
-//         return response.data.organic_results || [];
-//     } catch (error) {
-//         console.error("Error fetching search results:", error);
-//         return [];
-//     }
-// };
-
-
-//LinkUp.so API
-
-// import axios from 'axios';
-// import { CONFIG } from '../config/env.js';
-
-// export const fetchSearchResults = async (query) => {
-//     if (!CONFIG.LINKUP_API_KEY) {
-//         console.error("Error: LINKUP_API_KEY is missing.");
-//         return [];
-//     }
-
-//     if (!query || typeof query !== 'string' || query.trim().length === 0) {
-//         console.error("Error: Invalid search query.");
-//         return [];
-//     }
-
-//     try {
-//         const requestPayload = {
-//             q: query.trim(), // Ensure it's plain text
-//             depth: "standard",
-//             outputType: "searchResults",
-//             limit: 10
-//         };
-
-//         console.log("Sending API Request to Linkup:", requestPayload);
-
-//         const response = await axios.post(
-//             'https://api.linkup.so/v1/search',
-//             requestPayload,
-//             {
-//                 headers: {
-//                     'Authorization': `Bearer ${CONFIG.LINKUP_API_KEY}`,
-//                     'Content-Type': 'application/json'
-//                 }
-//             }
-//         );
-
-//         console.log("Search results received:", response.data);
-//         return response.data.results || [];
-//     } catch (error) {
-//         console.error("Error fetching search results:", error.response?.data || error.message);
-//         return [];
-//     }
-// };
-
-
 // Perplexity API
-const axios = require('axios');
-const { PERPLEXITY_API_KEY } = require('../config/env');
+const axios = require("axios");
+const { PERPLEXITY_API_KEY } = require("../config/env");
 
 async function fetchSearchResults(query) {
-    try {
-        const response = await axios.post('https://api.perplexity.ai/v1/chat', {
-            query: query,
-        }, {
-            headers: { 
-                'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
-                'Content-Type': 'application/json'
-            }
-        });
+  try {
+    const response = await axios.post(
+      "https://api.perplexity.ai/chat/completions",
+      {
+        model: "sonar",
+        messages: [
+          {
+            role: "system",
+            content:
+              "Provide informative and factual answers with relevant sources.",
+          },
+          {
+            role: "user",
+            content: query,
+          },
+        ],
+        temperature: 0.2,
+        max_tokens: 300,
+        return_citations: true,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${PERPLEXITY_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-        return response.data?.sources || [];
-    } catch (error) {
-        console.error('Error fetching search results from Perplexity:', error);
-        throw error;
-    }
+    const sources = response.data.citations || [];
+    const formattedSources = sources.map((url) => ({
+      url,
+      title: url.split("/").pop().replace(/-/g, " ") || url,
+    }));
+
+    return {
+      content: response.data.choices[0].message.content,
+      sources: formattedSources,
+    };
+  } catch (error) {
+    console.error("Error fetching search results from Perplexity:", error);
+    throw error;
+  }
 }
 
 module.exports = { fetchSearchResults };

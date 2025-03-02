@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // import React from 'react';
 
 // const SearchResults = ({ results }) => {
@@ -9,7 +10,7 @@
 //                     <p>{result.snippet}</p>
 //                     <a href={result.link} target="_blank" rel="noopener noreferrer">
 //                         Read More</a>
-                    
+
 //                     {result.fullContent && (
 //                         <details>
 //                             <summary>View Full Content</summary>
@@ -24,17 +25,31 @@
 
 // export default SearchResults;
 
+// eslint-disable-next-line react/prop-types
+import ReactMarkdown from "react-markdown";
+
 function SearchResults({ results }) {
-    return (
-        <div className="p-4">
-            <h2 className="text-xl font-bold">Search Results</h2>
-            <ul>
-                {results.map((result, index) => (
-                    <li key={index} className="border p-2 mt-2">{result}</li>
-                ))}
-            </ul>
-        </div>
-    );
+  console.log(results);
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold">Search Results</h2>
+      <ReactMarkdown>{results.content}</ReactMarkdown>
+      <ul>
+        {results?.sources?.map((source, index) => (
+          <li key={index} className="border p-2 mt-2">
+            <a
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              {source.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default SearchResults;
