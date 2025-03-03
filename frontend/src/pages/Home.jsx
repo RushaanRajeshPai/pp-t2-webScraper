@@ -57,49 +57,24 @@ import { fetchLinkupResults } from "../services/linkupSearchService";
 
 function Home() {
   const [perplexityResults, setPerplexityResults] = useState({});
-  const [linkupResults, setLinkupResults] = useState({}); // ✅ Now an object
+  const [linkupResults, setLinkupResults] = useState({}); 
 
   const handleSearch = async (query) => {
-    // try {
-    //   console.log("Searching for:", query);
-
-    //   // Fetch Perplexity results
-    //   const perplexityData = await search(query);
-    //   console.log("Perplexity Results:", perplexityData.results);
-    //   setPerplexityResults(perplexityData.results || {});
-
-    //   // Fetch LinkUp results
-    //   const linkupData = await fetchLinkupResults(query);
-    //   console.log("LinkUp Results:", linkupData);
-    //   setLinkupResults(linkupData || {}); // ✅ Ensure object format
-    // } catch (error) {
-    //   console.error("Error fetching search results:", error);
-    // }
 
     try {
-      console.log("🔎 Searching for:", query);
+      console.log("Searching for:", query);
 
       // Fetch Perplexity results
       const Data = await search(query);
       console.log(Data);
-      console.log("✅ Perplexity Results:", Data.results);
+      console.log("Perplexity Results:", Data.results);
 
       setPerplexityResults(Data.results[0] || {});
       setLinkupResults(Data.results[1] || {});
 
-      // Fetch LinkUp results
-      // const linkupData = await fetchLinkupResults(query);
-      // console.log("🚨 LinkUp Results:", linkupData);
 
-      // Explicitly ensure `setLinkupResults` receives an object
-      // if (linkupData && typeof linkupData === "object") {
-      //   setLinkupResults(linkupData);
-      // } else {
-      //   console.error("❌ Unexpected LinkUp result format:", linkupData);
-      //   setLinkupResults({ content: "No data available", sources: [] });
-      // }
     } catch (error) {
-      console.error("❌ Error fetching search results:", error);
+      console.error("Error fetching search results:", error);
     }
   };
 
