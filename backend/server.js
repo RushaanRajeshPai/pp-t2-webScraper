@@ -10,10 +10,9 @@ app.use(cors());
 
 // Attach both Perplexity and LinkUp API routes
 app.use("/api", searchRoutes);
-app.use("/api", searchRoutesLinkup); // New route for LinkUp API
+// app.use("/api/v1", searchRoutesLinkup); // New route for LinkUp API
 
 app.listen(5004, () => console.log("Server running on port 5004"));
-
 
 //connection error
 // const express = require("express");

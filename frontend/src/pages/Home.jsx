@@ -11,12 +11,12 @@
 //   const handleSearch = async (query) => {
 //     try {
 //       console.log("Searching for:", query);
-  
+
 //       // Fetch Perplexity results
 //       const perplexityData = await search(query);
 //       console.log("Perplexity Results:", perplexityData.results);
 //       setPerplexityResults(perplexityData.results || {});  // ✅ Ensure it's an object
-  
+
 //       // Fetch LinkUp results
 //       const linkupData = await fetchLinkupResults(query);
 //       console.log("LinkUp Results:", linkupData);
@@ -36,7 +36,7 @@
 //           <h2 className="text-xl font-semibold">Perplexity Results</h2>
 //           <SearchResults results={perplexityResults} />  {/* ✅ Now passing an object */}
 //         </div>
-        
+
 //         {/* Display Linkup.so API results */}
 //         <div>
 //           <h2 className="text-xl font-semibold">Linkup.so Results</h2>
@@ -48,7 +48,6 @@
 // }
 
 // export default Home;
-
 
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
@@ -76,30 +75,36 @@ function Home() {
     // } catch (error) {
     //   console.error("Error fetching search results:", error);
     // }
-    
+
     try {
       console.log("🔎 Searching for:", query);
-  
+
       // Fetch Perplexity results
-      const perplexityData = await search(query);
-      console.log("✅ Perplexity Results:", perplexityData.results);
-      setPerplexityResults(perplexityData.results || {});
-  
+      const Data = await search(query);
+      console.log(Data);
+      console.log("✅ Perplexity Results:", Data.results);
+
+      setPerplexityResults(Data.results[0] || {});
+      setLinkupResults(Data.results[1] || {});
+
       // Fetch LinkUp results
-      const linkupData = await fetchLinkupResults(query);
-      console.log("🚨 LinkUp Results:", linkupData);
-  
+      // const linkupData = await fetchLinkupResults(query);
+      // console.log("🚨 LinkUp Results:", linkupData);
+
       // Explicitly ensure `setLinkupResults` receives an object
-      if (linkupData && typeof linkupData === "object") {
-        setLinkupResults(linkupData);
-      } else {
-        console.error("❌ Unexpected LinkUp result format:", linkupData);
-        setLinkupResults({ content: "No data available", sources: [] });
-      }
+      // if (linkupData && typeof linkupData === "object") {
+      //   setLinkupResults(linkupData);
+      // } else {
+      //   console.error("❌ Unexpected LinkUp result format:", linkupData);
+      //   setLinkupResults({ content: "No data available", sources: [] });
+      // }
     } catch (error) {
       console.error("❌ Error fetching search results:", error);
     }
   };
+
+  console.log(perplexityResults);
+  console.log(linkupResults);
 
   return (
     <div className="p-4">

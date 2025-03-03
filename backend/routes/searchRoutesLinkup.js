@@ -6,6 +6,7 @@ const router = express.Router();
 // ✅ Define the LinkUp search route
 router.get("/search/linkup", async (req, res) => {
   const query = req.query.q;
+  console.log(query);
   if (!query) {
     return res.status(400).json({ error: "Query parameter is required" });
   }
