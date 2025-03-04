@@ -20,8 +20,8 @@ async function fetchSearchResults(query) {
           },
         ],
         temperature: 0.2,
-        max_tokens: 300,
-        return_citations: true,
+        max_tokens: 300,  //roughly 225-400 words response length
+        return_citations: true, //Perplexity-specific parameter requesting source citations for claims made in the response.
       },
       {
         headers: {
@@ -35,7 +35,7 @@ async function fetchSearchResults(query) {
     const formattedSources = sources.map((url) => ({
       url,
       title: url.split("/").pop().replace(/-/g, " ") || url,
-    }));
+    }));  //it picks the last word of the url as its title and replaces hyphens with spaces
 
     return {
       content: response.data.choices[0].message.content,

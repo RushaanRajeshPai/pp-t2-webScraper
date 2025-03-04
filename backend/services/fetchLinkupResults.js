@@ -4,7 +4,8 @@ const { LINKUP_API_KEY } = require("../config/env");
 async function fetchLinkupResults(
   query,
   depth = "standard",
-  outputType = "sourcedAnswer"
+  outputType = "sourcedAnswer"  //outputType : defines the format of the returned results
+                                //sourcedAnswer : returns the answer with a list of sources
 ) {
   try {
     // If using in a Node.js environment

@@ -30,8 +30,8 @@ async function enhanceQuery(query) {
 
         Respond ONLY with the enhanced query or original query with no additional text or explanation.`
     );
-    const response = await result.response;
-    const text = response.text();
+    const response = await result.response;  //extracts the response object from the result
+    const text = response.text();    //extracts the plain text content from the response
 
     console.log("Gemini API Response:", text);
 
