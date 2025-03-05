@@ -3,15 +3,14 @@ const { SCRAPINGBEE_API_KEY } = require("../config/env");
 
 async function fetchScrapingBeeResults(query) {
   try {
-    const response = await axios.get("https://app.scrapingbee.com/api/v1/", {
-      params: {
-        api_key: SCRAPINGBEE_API_KEY,
-        url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-        render_js: true,
-      },
-    });
+    const response = await axios.get(`https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${url}`
+      // params: {
+      //   api_key: SCRAPINGBEE_API_KEY,
+      //   url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+      //   render_js: true,
+      // },
+    );
 
-    console.log("Response what? : ", response.data)
 
     if (!response || !response.data) {
       console.error("No response data received from ScrapingBee API");
