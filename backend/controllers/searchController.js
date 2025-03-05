@@ -3,6 +3,7 @@ const { fetchSearchResults } = require("../services/fetchSearchResults");
 const { fetchLinkupResults } = require("../services/fetchLinkupResults");
 const { fetchScrapingBeeResults } = require("../services/scrapingService");
 const { fetchSerpApiResults } = require("../services/fetchSerpApiResults");
+const { getGeminiAnswer } = require("../services/fetchGeminiAnswers");
 
 async function search(req, res) {
   try {
@@ -28,13 +29,18 @@ async function search(req, res) {
 
     console.log(scrapingbeeResult1)
     console.log(scrapingbeeResult2)
-    
-    // const generatedAnswer = await getGeminiAnswer(content);
-    // const scrapingbeeRes = {
-    //   content: generatedAnswer,
-    //   sources: serpApiResults
-    // }
-    // res.json({ query: enhancedQuery, results: [searchResults, linkupResults, scrapingbeeRes] });
+
+    const content = scrapingbeeResult1.concat(scrapingbeeResult2)
+      .map((result) => result.content) //extracts only the content from result 
+      .filter(Boolean) //so that we dont face probs with null values
+      .join("\n\n"); //leave line
+
+    const generatedAnswer = await getGeminiAnswer(content);
+    const scrapingbeeRes = {
+      content: generatedAnswer,
+      sources: serpApiResults
+    }
+    res.json({ query: enhancedQuery, results: [searchResults, linkupResults, scrapingbeeRes] });
   } catch (error) {
     res.status(500).json({ error: "Search failed" });
   }

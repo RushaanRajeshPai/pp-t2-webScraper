@@ -7,7 +7,7 @@ import { search } from "../services/searchService";
 function Home() {
   const [perplexityResults, setPerplexityResults] = useState({});
   const [linkupResults, setLinkupResults] = useState({}); 
-  const [scrapingbeeResults, setScrapingbeeResults] = useState({});
+  const [scrapingbeeRes, setScrapingbeeRes] = useState({});
 
   const handleSearch = async (query) => {
 
@@ -22,7 +22,7 @@ function Home() {
 
       setPerplexityResults(Data.results[0] || {});
       setLinkupResults(Data.results[1] || {});
-      setScrapingbeeResults(Data.results[2] || {});
+      setScrapingbeeRes(Data.results[2] || {});
 
 
     } catch (error) {
@@ -32,7 +32,7 @@ function Home() {
 
   console.log(perplexityResults);
   console.log(linkupResults);
-  console.log(scrapingbeeResults);
+  console.log(scrapingbeeRes);
 
   return (
     <div className="p-4">
@@ -53,7 +53,7 @@ function Home() {
 
         <div>
           <h2 className="text-xl font-semibold">Scrapingbee Results</h2>
-          <SearchResults results={scrapingbeeResults} />
+          <SearchResults results={scrapingbeeRes} />
         </div>
       </div>
     </div>
