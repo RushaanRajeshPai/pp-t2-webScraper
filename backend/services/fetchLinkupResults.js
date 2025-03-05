@@ -27,7 +27,7 @@ async function fetchLinkupResults(
       }
     );
 
-    console.log("Full LinkUp API Response:", response);
+    // console.log("Full LinkUp API Response:", response);
 
     if (!response || !response.data) {
       console.error("No response data received from LinkUp API");
@@ -43,7 +43,7 @@ async function fetchLinkupResults(
       })),
     };
 
-    console.log("Formatted LinkUp Results:", formattedResults);
+    // console.log("Formatted LinkUp Results:", formattedResults);
     return formattedResults;
   } catch (error) {
     console.error("Error fetching LinkUp results:", error.message);

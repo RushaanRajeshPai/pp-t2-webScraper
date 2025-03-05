@@ -3,7 +3,7 @@ const { SCRAPINGBEE_API_KEY } = require("../config/env");
 
 async function fetchScrapingBeeResults(query) {
   try {
-    const response = await axios.get(`https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${url}`
+    const response = await axios.get(`https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${query}`
       // params: {
       //   api_key: SCRAPINGBEE_API_KEY,
       //   url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
@@ -28,7 +28,7 @@ async function fetchScrapingBeeResults(query) {
     }));
 
     return {
-      content: extractedContent.substring(0, 500), 
+      content: extractedContent, 
       sources: formattedSources,
     };
   } catch (error) {
