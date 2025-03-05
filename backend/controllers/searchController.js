@@ -36,10 +36,33 @@ async function search(req, res) {
       .join("\n\n"); //leave line
 
     const generatedAnswer = await getGeminiAnswer(content);
+    // const scrapingbeeRes = {
+    //   content: generatedAnswer,
+    //   sources: serpApiResults
+    // }
+
+    // const scrapingbeeRes = {
+    //   content: generatedAnswer,
+    //   sources: serpApiResults.organic_results.map((item) => ({
+    //     url: item.link,
+    //     title: item.title || item.link,
+    //   }))
+    // };
+
     const scrapingbeeRes = {
       content: generatedAnswer,
-      sources: serpApiResults
-    }
+      sources: [
+        ...serpApiResults.organic_results.map((item) => ({
+          url: item.link,
+          title: item.title || item.link, // Use title if available
+        })),
+        ...serpApiResults.related_questions.map((item) => ({
+          url: item.link,
+          title: item.question || item.link, // Use question text as title if available
+        }))
+      ]
+    };
+    
     res.json({ query: enhancedQuery, results: [searchResults, linkupResults, scrapingbeeRes] });
   } catch (error) {
     res.status(500).json({ error: "Search failed" });
