@@ -54,11 +54,11 @@ async function search(req, res) {
       sources: [
         ...serpApiResults.organic_results.map((item) => ({
           url: item.link,
-          title: item.title || item.link, // Use title if available
+          title: item.title || item.link,
         })),
         ...serpApiResults.related_questions.map((item) => ({
           url: item.link,
-          title: item.question || item.link, // Use question text as title if available
+          title: item.question || item.link, 
         }))
       ]
     };
